@@ -18,7 +18,7 @@ typedef struct
 {
     int id;
     char descripcion[20];
-}eSector;
+} eSector;
 
 int menu();
 void inicializarEmpleados(eEmpleado lista[], int tam);
@@ -33,13 +33,16 @@ void harcodearEmpleados(eEmpleado empleados[]);
 void mostrarEmpleados(eEmpleado lista[], int tam, eSector sectores[], int tamSector);
 void listarSectores(eSector sectores[], int tam);
 void obtenerSector(eSector sectores[], int tam, int idSector, char cadena[]);
-void mostrarXsector(eEmpleado empleados[],int tam,eSector sectores,int tamSector);
+void mostrarXsector(eEmpleado empleados[],int tam,eSector sectores[],int tamSector);
+void ordenarXsector(eSector sectores[],int tamSector);
+
 
 int main()
 {
     char seguir = 's';
 
-    eSector sectores[]={
+    eSector sectores[]=
+    {
         {1, "RRHH"},
         {2, "Ventas"},
         {3, "Compras"},
@@ -47,8 +50,6 @@ int main()
         {5, "Sistemas"}
 
     };
-
-
 
     eEmpleado empleados[TAM];
     inicializarEmpleados(empleados,TAM);
@@ -75,7 +76,7 @@ int main()
             ordenarEmpleadosXlegajo(empleados, TAM);
             system("pause");
             break;
-            case 6:
+        case 6:
             mostrarXsector(empleados, TAM,sectores,5);
             system("pause");
             break;
@@ -102,8 +103,10 @@ int menu()
     printf(" 2- Baja\n");
     printf(" 3- Modificacion\n");
     printf(" 4- Listar Empleados\n");
-    printf(" 5- Ordenar Empleados x legajo\n");
+    printf(" 5- Ordenar Empleados x LEGAJO\n");
     printf(" 6- mostrar Empleados X SECTOR\n");
+    printf(" 7- Ordenar Empleados X SECTOR y X NOMBRE\n");
+    printf(" 8- Ordenar por maximo salario de cada sector\n");
     printf(" 10- Salir\n\n");
     printf(" Ingrese opcion: ");
     scanf("%d", &opcion);
@@ -212,7 +215,7 @@ void altaEmpleado(eEmpleado lista[], int tam, eSector sectores[], int tamSector)
         {
 
             printf("Ya existe un empleado con el legajo %d\n", legajo);
-          //  mostrarEmpleado(lista[existe]);
+            //  mostrarEmpleado(lista[existe]);
             system("pause");
 
         }
@@ -270,7 +273,7 @@ void bajaEmpleado(eEmpleado lista[], int tam)
     }
     else
     {
-       // mostrarEmpleado(lista[indice]);
+        // mostrarEmpleado(lista[indice]);
 
         printf("\nConfima borrado s/n: ");
         fflush(stdin);
@@ -315,7 +318,7 @@ void ModificarEmpleado(eEmpleado lista[], int tam)
     }
     else
     {
-       //mostrarEmpleado(lista[indice],sectores,tam);
+        //mostrarEmpleado(lista[indice],sectores,tam);
 
         printf("\nModifica sueldo? s/n: ");
         fflush(stdin);
@@ -391,39 +394,66 @@ void harcodearEmpleados(eEmpleado empleados[])
 
 }
 
-void listarSectores(eSector sectores[], int tam){
+void listarSectores(eSector sectores[], int tam)
+{
 
-      printf("Id  Descripcion\n");
-      for(int i=0; i< tam; i++){
-      printf("%d   %10s\n", sectores[i].id, sectores[i].descripcion);
+    printf("Id  Descripcion\n");
+    for(int i=0; i< tam; i++)
+    {
+        printf("%d   %10s\n", sectores[i].id, sectores[i].descripcion);
     }
     printf("\n\n");
 }
 
-void obtenerSector(eSector sectores[], int tam, int idSector, char cadena[]){
+void obtenerSector(eSector sectores[], int tam, int idSector, char cadena[])
+{
 
-for(int i=0; i < tam; i++){
+    for(int i=0; i < tam; i++)
+    {
 
-    if( sectores[i].id == idSector){
-        strcpy(cadena, sectores[i].descripcion);
+        if( sectores[i].id == idSector)
+        {
+            strcpy(cadena, sectores[i].descripcion);
+        }
     }
-}
 
 }
 
-void mostrarXsector(eEmpleado empleados[],int tam,eSector sectores,int tamSector)
+void mostrarXsector(eEmpleado empleados[],int tam,eSector sectores[],int tamSector)
 {
     int idSector;
 
     listarSectores(sectores,tamSector);
+    printf("cual sector desea ver: ");
+    scanf("%d",&idSector);
 
-    for(int =0;i<tam ; i++)
+    for(int i=0; i<tam ; i++)
     {
-       if(empleados[i].idSector==idSector)
-       {
-           mostrarEmpleado(empleados,sectores,tam);
-       }
+        if(empleados[i].idSector==idSector)
+        {
+            mostrarEmpleado(empleados[i],sectores,tam);
+        }
 
     }
 
 }
+
+void ordenarXsector(eSector sectores[],int tamSector)
+{
+    eSector auxSector;
+    for(int i=0; i<tamSector-1; i++)
+    {
+
+        for(int j=i+1; j<tamSector; i++)
+        {
+            if( sectores[i].id > sectores[j].id)
+            {
+                auxSector=sectores[i];
+                sectores[i]=sectores[j];
+                sectores[j]=auxSector;
+
+            }
+        }
+    }
+}
+
